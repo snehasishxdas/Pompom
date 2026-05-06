@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Beautiful Pompom ❤️</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for a romantic look */
+        @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #fce7f3 0%, #f9a8d4 100%); /* Soft pink/rose gradient */
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container-card {
+            background-color: white;
+            box-shadow: 0 20px 25px -5px rgba(236, 72, 153, 0.3), 
+                        0 10px 10px -5px rgba(236, 72, 153, 0.1);
+            max-width: 90%;
+            transition: all 0.5s ease-in-out;
+        }
+
+        .title-text {
+            font-family: 'Pacifico', cursive;
+            color: #ec4899; /* Pink 500 */
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+        }
+
+        .affirmation-button {
+            transition: transform 0.1s, box-shadow 0.1s;
+            border: 2px solid #f472b6;
+        }
+
+        .affirmation-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(236, 72, 153, 0.4), 
+                        0 2px 4px -2px rgba(236, 72, 153, 0.2);
+            background-color: #fce7f3;
+        }
+
+        .affirmation-button:disabled {
+            cursor: not-allowed;
+            background-color: #f9d2e3; /* Lighter pink for disabled */
+            opacity: 0.7;
+        }
+
+        /* Responsive adjustments */
+        @media (min-width: 768px) {
+            .container-card {
+                max-width: 600px;
+                padding: 40px;
+            }
+        }
+    </style>
+</head>
+<body class="p-4">
+
+    <div id="app" class="container-card w-full p-6 md:p-10 rounded-3xl text-center">
+        
+        <header class="mb-8">
+            <h1 class="title-text text-5xl md:text-6xl mb-2 leading-tight">My Dearest Pompom!</h1>
+            <p class="text-xl md:text-2xl text-pink-600 font-semibold">A Love Note From Snehasish</p>
+        </header>
+
+        <div id="quiz-container" class="space-y-6">
+            <p id="initial-message" class="text-gray-700 text-lg mb-8">
+                The photos you sent today filled my heart with so much pure joy and happiness. You are the most beautiful and adorable person in the world, and this little website is here to tell you that in a million ways!
+            </p>
+
+            <div id="question-card" class="bg-pink-50 p-6 rounded-2xl hidden">
+                <p id="question-text" class="text-2xl font-bold text-pink-700 mb-6">Question text...</p>
+                <div id="options-container" class="space-y-4">
+                    </div>
+            </div>
+
+            <div id="result-card" class="bg-green-50 p-8 rounded-2xl hidden">
+                <p class="text-3xl font-extrabold text-green-700 mb-4">You Completed the Sweetness Test!</p>
+                <p id="result-message" class="text-xl text-gray-800 mb-6">
+                    Every answer confirms what I already know: Your cuteness is infinite, your happiness is my world, and my love for you, my beautiful Pompom, is boundless.
+                </p>
+                <p class="text-2xl font-bold text-pink-600">
+                    I love you, my sweetheart! ❤️ <br>~ Snehasish
+                </p>
+            </div>
+
+            <button id="start-button" class="mt-4 px-8 py-3 bg-pink-500 text-white text-xl font-bold rounded-full shadow-lg hover:bg-pink-600 transition duration-300 transform hover:scale-105">
+                Start the Affirmations!
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const quizContainer = document.getElementById('quiz-container');
+            const initialMessage = document.getElementById('initial-message');
+            const startButton = document.getElementById('start-button');
+            const questionCard = document.getElementById('question-card');
+            const questionText = document.getElementById('question-text');
+            const optionsContainer = document.getElementById('options-container');
+            const resultCard = document.getElementById('result-card');
+
+            let currentQuestionIndex = 0;
+            let score = 0;
+
+            const questions = [
+                {
+                    q: "When you sent me that photo, what was the immediate effect on my day?",
+                    options: [
+                        { text: "It instantly made my whole day ten times better.", isPositive: true },
+                        { text: "It caused an overwhelming rush of happiness.", isPositive: true },
+                        { text: "There is no negative option here. You're too cute.", isDisabled: true }
+                    ]
+                },
+                {
+                    q: "Your adorable sleepy-eyed look this morning was...",
+                    options: [
+                        { text: "The absolute cutest thing I've ever seen.", isPositive: true },
+                        { text: "Enough to melt my heart instantly.", isPositive: true }
+                    ]
+                },
+                {
+                    q: "The crinkle by your eyes when you genuinely smile is...",
+                    options: [
+                        { text: "My favorite feature in the whole world.", isPositive: true },
+                        { text: "The definition of perfect happiness.", isPositive: true },
+                    ]
+                },
+                {
+                    q: "How perfect is your concentration face when you're focused?",
+                    options: [
+                        { text: "Impossibly adorable and sweet.", isPositive: true },
+                        { text: "Deserving of all the cuddles and treats.", isPositive: true },
+                        { text: "Could not be made less perfect.", isDisabled: true }
+                    ]
+                },
+                {
+                    q: "When you are happy, your laughter is...",
+                    options: [
+                        { text: "My favorite sound in the universe, a pure melody.", isPositive: true },
+                        { text: "More valuable than any treasure.", isPositive: true }
+                    ]
+                },
+                {
+                    q: "The tiny little hand gestures you make when you are excited are...",
+                    options: [
+                        { text: "The most charming and endearing thing ever.", isPositive: true },
+                        { text: "Proof that you are the queen of cuteness.", isPositive: true }
+                    ]
+                },
+                {
+                    q: "Your overall cuteness level, from 1 to infinity, is...",
+                    options: [
+                        { text: "Infinitely beyond the charts.", isPositive: true },
+                        { text: "A scientific phenomenon of pure sweetness.", isPositive: true }
+                    ]
+                },
+                {
+                    q: "How lucky am I to have you, Pompom?",
+                    options: [
+                        { text: "I'm the luckiest guy who ever lived.", isPositive: true },
+                        { text: "My luck is simply boundless and endless.", isPositive: true }
+                    ]
+                }
+            ];
+
+            function renderQuestion() {
+                if (currentQuestionIndex >= questions.length) {
+                    showResults();
+                    return;
+                }
+
+                const currentQ = questions[currentQuestionIndex];
+                questionText.textContent = currentQ.q;
+                optionsContainer.innerHTML = ''; 
+
+                currentQ.options.forEach(option => {
+                    const button = document.createElement('button');
+                    button.textContent = option.text;
+                    button.className = `affirmation-button w-full px-5 py-3 text-lg rounded-xl font-medium text-gray-800 transition duration-150`;
+                    
+                    if (option.isDisabled) {
+                        button.disabled = true;
+                        button.classList.add('opacity-50', 'bg-gray-200', 'text-gray-500', 'cursor-not-allowed');
+                        button.classList.remove('text-gray-800');
+                    } else {
+                        button.classList.add('bg-white');
+                        button.onclick = () => handleAnswer(option);
+                    }
+                    
+                    optionsContainer.appendChild(button);
+                });
+
+                questionCard.classList.remove('hidden');
+            }
+
+            function handleAnswer(option) {
+                if (option.isPositive) {
+                    score++;
+                }
+                currentQuestionIndex++;
+                setTimeout(renderQuestion, 300); 
+            }
+
+            function showResults() {
+                questionCard.classList.add('hidden');
+                resultCard.classList.remove('hidden');
+            }
+
+            startButton.onclick = () => {
+                initialMessage.classList.add('hidden');
+                startButton.classList.add('hidden');
+                renderQuestion();
+            };
+        });
+    </script>
+</body>
+</html>
